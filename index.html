@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IntegraVida</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #fff;
+      color: #333;
+    }
+    .splash, .despedida {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.8em;
+      color: #c1121f;
+      z-index: 9999;
+      text-align: center;
+      padding: 20px;
+    }
+    .splash small {
+      font-size: 0.6em;
+      color: #555;
+      margin-top: 10px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #c1121f;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      background: #c1121f;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #a00e1a;
+    }
+    .documentacao {
+      margin-top: 40px;
+      font-size: 0.9em;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.8em;
+      color: #888;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="splash" id="splash">
+    <strong>IntegraVida</strong>
+    <div style="font-size:0.7em; margin-top:10px;">“Reconectando pessoas à vida com dignidade.”</div>
+    <div style="font-size:0.5em;">Sistema de integração social para reconstrução de vidas.</div>
+    <small>Powered by NEXT</small>
+  </div>
+
+  <div class="despedida" id="despedida" style="display:none;">
+    Obrigado por contribuir com o serviço social 💖<br />
+    <small>Sistema IntegraVida • Desenvolvido por NEXT</small>
+  </div>
+
+  <div class="container" id="app" style="display:none;">
+    <h1>Cadastro Social</h1>
+    <input type="text" id="nome" placeholder="Nome completo" />
+    <input type="number" id="idade" placeholder="Idade" />
+    <select id="genero">
+      <option value="">Gênero</option>
+      <option value="Masculino">Masculino</option>
+      <option value="Feminino">Feminino</option>
+      <option value="Outro">Outro</option>
+    </select>
+    <input type="text" id="cidade" placeholder="Cidade/localização" />
+    <select id="motivo">
+      <option value="">Motivo para estar na rua</option>
+      <option value="Dependência química">Dependência química</option>
+      <option value="Depressão">Depressão</option>
+      <option value="Doença mental">Doença mental</option>
+      <option value="Outros">Outros</option>
+    </select>
+    <textarea id="situacao" placeholder="Descreva a situação atual"></textarea>
+    <input type="text" id="responsavel" placeholder="Responsável pelo atendimento" />
+
+    <button onclick="gerarRelatorio()">📄 Gerar Relatório PDF</button>
+    <button onclick="sair()">🚪 Sair do aplicativo</button>
+
+    <div class="documentacao">
+      <h2>📘 Documentação</h2>
+      <h3>README</h3>
+      <p>Este aplicativo foi criado para cadastrar e encaminhar moradores de rua para apoio social e profissional.</p>
+      <h3>Ficha Técnica</h3>
+      <ul>
+        <li>Nome: IntegraVida</li>
+        <li>Desenvolvedor: Marco Antônio Conceição</li>
+        <li>Empresa: NEXT</li>
+        <li>Versão: 1.0</li>
+        <li>Tecnologias: HTML, CSS, JavaScript, jsPDF</li>
+      </ul>
+      <h3>Normas de Segurança</h3>
+      <ul>
+        <li>Os dados são armazenados localmente</li>
+        <li>Não há coleta de dados pessoais sensíveis</li>
+        <li>Recomenda-se uso responsável e exportação periódica</li>
+      </ul>
+    </div>
+    <footer>Sistema IntegraVida • Desenvolvido por NEXT</footer>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById("splash").style.display = "none";
+      document.getElementById("app").style.display = "block";
+    }, 3000);
+
+    function gerarRelatorio() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const nome = document.getElementById("nome").value;
+      const idade = document.getElementById("idade").value;
+      const genero = document.getElementById("genero").value;
+      const cidade = document.getElementById("cidade").value;
+      const motivo = document.getElementById("motivo").value;
+      const situacao = document.getElementById("situacao").value;
+      const responsavel = document.getElementById("responsavel").value;
+      const data = new Date().toLocaleDateString();
+
+      let encaminhamento = "";
+      if (motivo === "Dependência química") encaminhamento = "Encaminhar para comunidade terapêutica";
+      else if (motivo === "Depressão") encaminhamento = "Encaminhar para CAPS ou psicólogo";
+      else if (motivo === "Doença mental") encaminhamento = "Encaminhar para hospital especializado";
+      else encaminhamento = "Encaminhar para casa de passagem ou centro de apoio";
+
+      doc.setFontSize(14);
+      doc.text("Relatório de Atendimento Social — IntegraVida", 20, 20);
+      doc.setFontSize(12);
+      doc.text(`Nome: ${nome}`, 20, 30);
+      doc.text(`Idade: ${idade}`, 20, 40);
+      doc.text(`Gênero: ${genero}`, 20, 50);
+      doc.text(`Cidade: ${cidade}`, 20, 60);
+      doc.text(`Motivo: ${motivo}`, 20, 70);
+      doc.text(`Situação: ${situacao}`, 20, 80);
+      doc.text(`Encaminhamento: ${encaminhamento}`, 20, 90);
+      doc.text(`Responsável: ${responsavel}`, 20, 100);
+      doc.text(`Data: ${data}`, 20, 110);
+      doc.text("“Reconectando pessoas à vida com dignidade.”", 20, 130);
+      doc.setFontSize(10);
+      doc.text("Sistema IntegraVida • Desenvolvido por NEXT", 20, 140);
+
+      doc.save("relatorio_integravida.pdf");
+    }
+
+    function sair() {
+      document.getElementById("app").style.display = "none";
+      document.getElementById("despedida").style.display = "flex";
+    }
+  </script>
+</body>
+</html>
