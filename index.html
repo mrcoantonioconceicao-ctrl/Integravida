@@ -3,188 +3,1223 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IntegraVida</title>
+  <title>IntegraVida - Sistema de Integração Social</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: sans-serif;
-      background: #fff;
-      color: #333;
-    }
-    .splash, .despedida {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.8em;
-      color: #c1121f;
-      z-index: 9999;
-      text-align: center;
-      padding: 20px;
-    }
-    .splash small {
-      font-size: 0.6em;
-      color: #555;
-      margin-top: 10px;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #c1121f;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 0;
       box-sizing: border-box;
     }
-    button {
-      background: #c1121f;
+    
+    :root {
+      --primary: #c1121f;
+      --secondary: #1a1a2e;
+      --accent: #16213e;
+      --light: #f0f3f5;
+      --text: #333;
+      --border: #e0e0e0;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    /* NAVBAR */
+    .navbar {
+      background: var(--secondary);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .navbar-brand span {
+      color: var(--primary);
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    
+    .btn-logout {
+      background: var(--primary);
       color: white;
       border: none;
-      padding: 12px;
-      width: 100%;
+      padding: 0.5rem 1rem;
       border-radius: 4px;
       cursor: pointer;
-      font-weight: bold;
-      margin-top: 10px;
+      font-size: 0.9rem;
     }
-    button:hover {
+    
+    .btn-logout:hover {
       background: #a00e1a;
     }
-    .documentacao {
-      margin-top: 40px;
-      font-size: 0.9em;
-      background: #f9f9f9;
-      padding: 20px;
-      border-radius: 8px;
+    
+    /* LOGIN PAGE */
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
     }
-    footer {
+    
+    .login-card {
+      background: white;
+      padding: 3rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+    
+    .login-header {
       text-align: center;
-      font-size: 0.8em;
-      color: #888;
-      margin-top: 40px;
+      margin-bottom: 2rem;
+    }
+    
+    .login-header h1 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .login-header p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--secondary);
+    }
+    
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(193, 18, 31, 0.1);
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      width: 100%;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #a00e1a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(193, 18, 31, 0.3);
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+      margin-right: 0.5rem;
+    }
+    
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    
+    .btn-small {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    /* DASHBOARD */
+    .dashboard {
+      display: none;
+    }
+    
+    .dashboard.active {
+      display: block;
+    }
+    
+    .main-container {
+      display: flex;
+      min-height: calc(100vh - 60px);
+    }
+    
+    /* SIDEBAR */
+    .sidebar {
+      background: var(--secondary);
+      color: white;
+      width: 250px;
+      padding: 2rem 0;
+      position: fixed;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+    }
+    
+    .nav-item {
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-left: 3px solid transparent;
+    }
+    
+    .nav-item:hover {
+      background: rgba(255,255,255,0.1);
+      border-left-color: var(--primary);
+    }
+    
+    .nav-item.active {
+      background: rgba(193, 18, 31, 0.2);
+      border-left-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    /* CONTENT AREA */
+    .content {
+      margin-left: 250px;
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    
+    .section {
+      display: none;
+    }
+    
+    .section.active {
+      display: block;
+    }
+    
+    /* CARDS */
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-box {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      border-top: 4px solid var(--primary);
+    }
+    
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 0.5rem 0;
+    }
+    
+    .stat-label {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    /* TABLE */
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    th {
+      background: var(--accent);
+      color: white;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    tr:hover {
+      background: var(--light);
+    }
+    
+    /* FORM */
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .modal-header h2 {
+      color: var(--secondary);
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #999;
+    }
+    
+    .close-btn:hover {
+      color: var(--text);
+    }
+    
+    /* ALERT */
+    .alert {
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    
+    .alert.active {
+      display: block;
+    }
+    
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .alert-info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1rem 0;
+      }
+      
+      .content {
+        margin-left: 0;
+        padding: 1rem;
+      }
+      
+      .main-container {
+        flex-direction: column;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .nav-item {
+        display: inline-block;
+        width: 50%;
+        padding: 0.75rem;
+        text-align: center;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+      }
+      
+      .nav-item.active {
+        border-left: none;
+        border-bottom-color: var(--primary);
+      }
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .badge-primary {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+    
+    .badge-success {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .badge-warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    .badge-danger {
+      background: #f8d7da;
+      color: #721c24;
     }
   </style>
 </head>
 <body>
-  <div class="splash" id="splash">
-    <strong>IntegraVida</strong>
-    <div style="font-size:0.7em; margin-top:10px;">“Reconectando pessoas à vida com dignidade.”</div>
-    <div style="font-size:0.5em;">Sistema de integração social para reconstrução de vidas.</div>
-    <small>Powered by NEXT</small>
-  </div>
 
-  <div class="despedida" id="despedida" style="display:none;">
-    Obrigado por contribuir com o serviço social 💖<br />
-    <small>Sistema IntegraVida • Desenvolvido por NEXT</small>
-  </div>
-
-  <div class="container" id="app" style="display:none;">
-    <h1>Cadastro Social</h1>
-    <input type="text" id="nome" placeholder="Nome completo" />
-    <input type="number" id="idade" placeholder="Idade" />
-    <select id="genero">
-      <option value="">Gênero</option>
-      <option value="Masculino">Masculino</option>
-      <option value="Feminino">Feminino</option>
-      <option value="Outro">Outro</option>
-    </select>
-    <input type="text" id="cidade" placeholder="Cidade/localização" />
-    <select id="motivo">
-      <option value="">Motivo para estar na rua</option>
-      <option value="Dependência química">Dependência química</option>
-      <option value="Depressão">Depressão</option>
-      <option value="Doença mental">Doença mental</option>
-      <option value="Outros">Outros</option>
-    </select>
-    <textarea id="situacao" placeholder="Descreva a situação atual"></textarea>
-    <input type="text" id="responsavel" placeholder="Responsável pelo atendimento" />
-
-    <button onclick="gerarRelatorio()">📄 Gerar Relatório PDF</button>
-    <button onclick="sair()">🚪 Sair do aplicativo</button>
-
-    <div class="documentacao">
-      <h2>📘 Documentação</h2>
-      <h3>README</h3>
-      <p>Este aplicativo foi criado para cadastrar e encaminhar moradores de rua para apoio social e profissional.</p>
-      <h3>Ficha Técnica</h3>
-      <ul>
-        <li>Nome: IntegraVida</li>
-        <li>Desenvolvedor: Marco Antônio Conceição</li>
-        <li>Empresa: NEXT</li>
-        <li>Versão: 1.0</li>
-        <li>Tecnologias: HTML, CSS, JavaScript, jsPDF</li>
-      </ul>
-      <h3>Normas de Segurança</h3>
-      <ul>
-        <li>Os dados são armazenados localmente</li>
-        <li>Não há coleta de dados pessoais sensíveis</li>
-        <li>Recomenda-se uso responsável e exportação periódica</li>
-      </ul>
+<!-- LOGIN PAGE -->
+<div class="login-container" id="loginPage">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>IntegraVida</h1>
+      <p>"Reconectando pessoas à vida com dignidade"</p>
     </div>
-    <footer>Sistema IntegraVida • Desenvolvido por NEXT</footer>
+    <div class="alert alert-error" id="loginError"></div>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>Usuário</label>
+        <input type="text" id="loginUser" placeholder="Digite seu usuário" required />
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" id="loginPassword" placeholder="Digite sua senha" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Acessar Sistema</button>
+    </form>
+    <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
+      Demo: usuario / 123456
+    </p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="navbar-brand">
+      <span>🏥</span> IntegraVida
+    </div>
+    <div class="user-info">
+      <span id="currentUser"></span>
+      <div class="user-avatar" id="userInitials"></div>
+      <button class="btn-logout" onclick="handleLogout()">Sair</button>
+    </div>
   </div>
 
-  <script>
+  <div class="main-container">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="nav-item active" onclick="switchSection('dashboard')">
+        📊 Dashboard
+      </div>
+      <div class="nav-item" onclick="switchSection('newAttendance')">
+        ➕ Novo Atendimento
+      </div>
+      <div class="nav-item" onclick="switchSection('attendances')">
+        📋 Atendimentos
+      </div>
+      <div class="nav-item" onclick="switchSection('reports')">
+        📊 Relatórios
+      </div>
+      <div class="nav-item" onclick="switchSection('settings')">
+        ⚙️ Configurações
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="alert alert-success" id="successAlert"></div>
+
+      <!-- DASHBOARD SECTION -->
+      <div class="section active" id="dashboardSection">
+        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Dashboard</h2>
+        
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-label">Total de Atendimentos</div>
+            <div class="stat-number" id="totalAttendances">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Hoje</div>
+            <div class="stat-number" id="todayAttendances">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Encaminhados</div>
+            <div class="stat-number" id="referredCount">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Motivos Principais</div>
+            <div class="stat-number" id="mainReason">-</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📈 Últimos Atendimentos</div>
+          <div class="table-responsive">
+            <table id="recentAttendances">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Motivo</th>
+                  <th>Data</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEW ATTENDANCE SECTION -->
+      <div class="section" id="newAttendanceSection">
+        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Novo Atendimento</h2>
+        
+        <div class="card">
+          <form onsubmit="handleSaveAttendance(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nome Completo *</label>
+                <input type="text" id="attendanceName" placeholder="Nome" required />
+              </div>
+              <div class="form-group">
+                <label>Idade *</label>
+                <input type="number" id="attendanceAge" placeholder="Idade" min="0" max="150" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Gênero *</label>
+                <select id="attendanceGender" required>
+                  <option value="">Selecione...</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Cidade/Localização *</label>
+                <input type="text" id="attendanceCity" placeholder="Cidade" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Motivo para estar na rua *</label>
+                <select id="attendanceReason" required>
+                  <option value="">Selecione...</option>
+                  <option value="Dependência química">Dependência química</option>
+                  <option value="Depressão">Depressão</option>
+                  <option value="Doença mental">Doença mental</option>
+                  <option value="Desemprego">Desemprego</option>
+                  <option value="Violência doméstica">Violência doméstica</option>
+                  <option value="Falta de moradia">Falta de moradia</option>
+                  <option value="Outros">Outros</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Responsável pelo atendimento *</label>
+                <input type="text" id="attendanceResponsible" placeholder="Nome do responsável" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Descreva a situação atual *</label>
+              <textarea id="attendanceSituation" placeholder="Descreva detalhadamente a situação" rows="5" required></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-icon">
+                💾 Salvar Atendimento
+              </button>
+              <button type="reset" class="btn btn-secondary">Limpar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ATTENDANCES SECTION -->
+      <div class="section" id="attendancesSection">
+        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Gerenciamento de Atendimentos</h2>
+        
+        <div class="card">
+          <div class="table-responsive">
+            <table id="attendancesTable">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Idade</th>
+                  <th>Motivo</th>
+                  <th>Data</th>
+                  <th>Responsável</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p id="noAttendances" style="text-align: center; color: #999; padding: 2rem;">Nenhum atendimento registrado</p>
+        </div>
+      </div>
+
+      <!-- REPORTS SECTION -->
+      <div class="section" id="reportsSection">
+        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Relatórios</h2>
+        
+        <div class="card">
+          <div class="form-group">
+            <label>Tipo de Relatório</label>
+            <select id="reportType">
+              <option value="pdf">PDF Individual</option>
+              <option value="summary">Resumo de Atendimentos</option>
+              <option value="statistics">Estatísticas</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="generateReport()">📄 Gerar Relatório</button>
+        </div>
+      </div>
+
+      <!-- SETTINGS SECTION -->
+      <div class="section" id="settingsSection">
+        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Configurações</h2>
+        
+        <div class="card">
+          <div class="card-title">ℹ️ Informações do Sistema</div>
+          <p><strong>Sistema:</strong> IntegraVida v2.0</p>
+          <p><strong>Descrição:</strong> Sistema de integração social para reconstrução de vidas</p>
+          <p><strong>Desenvolvedor:</strong> Marco Antônio Conceição - NEXT</p>
+          <p><strong>Contato:</strong> contato@integravida.com.br</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">💾 Dados</div>
+          <button class="btn btn-primary btn-icon" onclick="exportData()" style="margin-bottom: 1rem;">
+            ⬇️ Exportar Dados
+          </button>
+          <button class="btn btn-secondary btn-icon" onclick="importData()" style="margin-bottom: 1rem;">
+            ⬆️ Importar Dados
+          </button>
+          <input type="file" id="importFile" style="display: none;" accept=".json" />
+          <button class="btn btn-secondary btn-icon" onclick="clearData()" style="background: var(--danger);">
+            🗑️ Limpar Todos os Dados
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal" id="viewModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Detalhes do Atendimento</h2>
+      <button class="close-btn" onclick="closeModal()">×</button>
+    </div>
+    <div id="modalContent"></div>
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="generatePDF()">📄 Gerar PDF</button>
+      <button class="btn btn-secondary" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // STATE MANAGEMENT
+  const state = {
+    currentUser: null,
+    attendances: [],
+    currentAttendance: null
+  };
+
+  // INITIALIZATION
+  document.addEventListener('DOMContentLoaded', () => {
+    loadDataFromStorage();
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      loginUser(savedUser);
+    }
+  });
+
+  // AUTHENTICATION
+  function handleLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('loginUser').value;
+    const password = document.getElementById('loginPassword').value;
+
+    // Simple demo authentication
+    if ((user === 'usuario' && password === '123456') || 
+        (user === 'admin' && password === 'admin123')) {
+      loginUser(user);
+      localStorage.setItem('currentUser', user);
+    } else {
+      showAlert('Usuário ou senha incorretos', 'error', 'loginError');
+    }
+  }
+
+  function loginUser(user) {
+    state.currentUser = user;
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('dashboard').classList.add('active');
+    document.getElementById('currentUser').textContent = `Bem-vindo, ${user}!`;
+    document.getElementById('userInitials').textContent = user.charAt(0).toUpperCase();
+    updateDashboard();
+  }
+
+  function handleLogout() {
+    state.currentUser = null;
+    localStorage.removeItem('currentUser');
+    document.getElementById('dashboard').classList.remove('active');
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPassword').value = '';
+  }
+
+  // NAVIGATION
+  function switchSection(sectionName) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    
+    document.getElementById(sectionName + 'Section').classList.add('active');
+    event.target.closest('.nav-item').classList.add('active');
+    
+    if (sectionName === 'attendances') {
+      updateAttendancesTable();
+    }
+  }
+
+  // ATTENDANCE MANAGEMENT
+  function handleSaveAttendance(e) {
+    e.preventDefault();
+    
+    const attendance = {
+      id: Date.now(),
+      name: document.getElementById('attendanceName').value,
+      age: document.getElementById('attendanceAge').value,
+      gender: document.getElementById('attendanceGender').value,
+      city: document.getElementById('attendanceCity').value,
+      reason: document.getElementById('attendanceReason').value,
+      situation: document.getElementById('attendanceSituation').value,
+      responsible: document.getElementById('attendanceResponsible').value,
+      date: new Date().toLocaleDateString('pt-BR'),
+      timestamp: new Date().getTime()
+    };
+
+    state.attendances.push(attendance);
+    saveDataToStorage();
+    
+    e.target.reset();
+    showAlert('Atendimento salvo com sucesso!', 'success', 'successAlert');
+    
     setTimeout(() => {
-      document.getElementById("splash").style.display = "none";
-      document.getElementById("app").style.display = "block";
-    }, 3000);
+      switchSection('attendances');
+      document.querySelector('.nav-item:nth-child(3)').click();
+    }, 1500);
+  }
 
-    function gerarRelatorio() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+  function updateDashboard() {
+    const today = new Date().toLocaleDateString('pt-BR');
+    const todayCount = state.attendances.filter(a => a.date === today).length;
+    
+    document.getElementById('totalAttendances').textContent = state.attendances.length;
+    document.getElementById('todayAttendances').textContent = todayCount;
+    document.getElementById('referredCount').textContent = state.attendances.length;
+    
+    const reasons = {};
+    state.attendances.forEach(a => {
+      reasons[a.reason] = (reasons[a.reason] || 0) + 1;
+    });
+    const mainReason = Object.keys(reasons).sort((a, b) => reasons[b] - reasons[a])[0];
+    document.getElementById('mainReason').textContent = mainReason || '-';
+    
+    updateRecentAttendances();
+  }
 
-      const nome = document.getElementById("nome").value;
-      const idade = document.getElementById("idade").value;
-      const genero = document.getElementById("genero").value;
-      const cidade = document.getElementById("cidade").value;
-      const motivo = document.getElementById("motivo").value;
-      const situacao = document.getElementById("situacao").value;
-      const responsavel = document.getElementById("responsavel").value;
-      const data = new Date().toLocaleDateString();
+  function updateRecentAttendances() {
+    const tbody = document.querySelector('#recentAttendances tbody');
+    tbody.innerHTML = '';
+    
+    state.attendances.slice(-5).reverse().forEach(a => {
+      const row = tbody.insertRow();
+      row.innerHTML = `
+        <td>${a.name}</td>
+        <td><span class="badge badge-warning">${a.reason}</span></td>
+        <td>${a.date}</td>
+        <td>
+          <button class="btn btn-small btn-primary" onclick="viewAttendance(${a.id})">Ver</button>
+        </td>
+      `;
+    });
+  }
 
-      let encaminhamento = "";
-      if (motivo === "Dependência química") encaminhamento = "Encaminhar para comunidade terapêutica";
-      else if (motivo === "Depressão") encaminhamento = "Encaminhar para CAPS ou psicólogo";
-      else if (motivo === "Doença mental") encaminhamento = "Encaminhar para hospital especializado";
-      else encaminhamento = "Encaminhar para casa de passagem ou centro de apoio";
-
-      doc.setFontSize(14);
-      doc.text("Relatório de Atendimento Social — IntegraVida", 20, 20);
-      doc.setFontSize(12);
-      doc.text(`Nome: ${nome}`, 20, 30);
-      doc.text(`Idade: ${idade}`, 20, 40);
-      doc.text(`Gênero: ${genero}`, 20, 50);
-      doc.text(`Cidade: ${cidade}`, 20, 60);
-      doc.text(`Motivo: ${motivo}`, 20, 70);
-      doc.text(`Situação: ${situacao}`, 20, 80);
-      doc.text(`Encaminhamento: ${encaminhamento}`, 20, 90);
-      doc.text(`Responsável: ${responsavel}`, 20, 100);
-      doc.text(`Data: ${data}`, 20, 110);
-      doc.text("“Reconectando pessoas à vida com dignidade.”", 20, 130);
-      doc.setFontSize(10);
-      doc.text("Sistema IntegraVida • Desenvolvido por NEXT", 20, 140);
-
-      doc.save("relatorio_integravida.pdf");
+  function updateAttendancesTable() {
+    const tbody = document.querySelector('#attendancesTable tbody');
+    const noMsg = document.getElementById('noAttendances');
+    
+    tbody.innerHTML = '';
+    
+    if (state.attendances.length === 0) {
+      noMsg.style.display = 'block';
+      return;
     }
+    
+    noMsg.style.display = 'none';
+    state.attendances.slice().reverse().forEach(a => {
+      const row = tbody.insertRow();
+      row.innerHTML = `
+        <td>${a.name}</td>
+        <td>${a.age}</td>
+        <td>${a.reason}</td>
+        <td>${a.date}</td>
+        <td>${a.responsible}</td>
+        <td>
+          <button class="btn btn-small btn-primary" onclick="viewAttendance(${a.id})">Ver</button>
+          <button class="btn btn-small btn-secondary" onclick="deleteAttendance(${a.id})">Deletar</button>
+        </td>
+      `;
+    });
+  }
 
-    function sair() {
-      document.getElementById("app").style.display = "none";
-      document.getElementById("despedida").style.display = "flex";
+  function viewAttendance(id) {
+    const attendance = state.attendances.find(a => a.id === id);
+    if (!attendance) return;
+    
+    state.currentAttendance = attendance;
+    const referral = getReferral(attendance.reason);
+    
+    document.getElementById('modalContent').innerHTML = `
+      <p><strong>Nome:</strong> ${attendance.name}</p>
+      <p><strong>Idade:</strong> ${attendance.age} anos</p>
+      <p><strong>Gênero:</strong> ${attendance.gender}</p>
+      <p><strong>Cidade:</strong> ${attendance.city}</p>
+      <p><strong>Motivo:</strong> ${attendance.reason}</p>
+      <p><strong>Situação:</strong> ${attendance.situation}</p>
+      <p><strong>Responsável:</strong> ${attendance.responsible}</p>
+      <p><strong>Encaminhamento Recomendado:</strong></p>
+      <div style="background: #f0f3f5; padding: 1rem; border-radius: 4px; margin: 1rem 0;">
+        ${referral}
+      </div>
+      <p><strong>Data:</strong> ${attendance.date}</p>
+    `;
+    
+    document.getElementById('viewModal').classList.add('active');
+  }
+
+  function deleteAttendance(id) {
+    if (confirm('Tem certeza que deseja deletar este atendimento?')) {
+      state.attendances = state.attendances.filter(a => a.id !== id);
+      saveDataToStorage();
+      updateAttendancesTable();
+      updateDashboard();
+      showAlert('Atendimento deletado', 'success', 'successAlert');
     }
-  </script>
+  }
+
+  function closeModal() {
+    document.getElementById('viewModal').classList.remove('active');
+  }
+
+  // PDF GENERATION
+  function generatePDF() {
+    const a = state.currentAttendance;
+    if (!a) return;
+    
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    const referral = getReferral(a.reason);
+    
+    doc.setFontSize(16);
+    doc.setTextColor(193, 18, 31);
+    doc.text('Relatório de Atendimento Social', 20, 20);
+    doc.text('IntegraVida', 20, 28);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text('"Reconectando pessoas à vida com dignidade"', 20, 34);
+    
+    doc.setDrawColor(193, 18, 31);
+    doc.line(20, 36, 190, 36);
+    
+    doc.setTextColor(0);
+    doc.setFontSize(11);
+    let y = 45;
+    
+    doc.text(`Data: ${a.date}`, 20, y);
+    y += 8;
+    doc.text(`Responsável: ${a.responsible}`, 20, y);
+    y += 15;
+    
+    doc.setFontSize(12);
+    doc.setTextColor(193, 18, 31);
+    doc.text('DADOS DO ATENDIDO', 20, y);
+    y += 8;
+    
+    doc.setTextColor(0);
+    doc.setFontSize(10);
+    doc.text(`Nome: ${a.name}`, 20, y);
+    y += 7;
+    doc.text(`Idade: ${a.age} anos | Gênero: ${a.gender}`, 20, y);
+    y += 7;
+    doc.text(`Cidade: ${a.city}`, 20, y);
+    y += 12;
+    
+    doc.setTextColor(193, 18, 31);
+    doc.setFontSize(12);
+    doc.text('MOTIVO E SITUAÇÃO', 20, y);
+    y += 8;
+    
+    doc.setTextColor(0);
+    doc.setFontSize(10);
+    doc.text(`Motivo: ${a.reason}`, 20, y);
+    y += 8;
+    
+    doc.text('Situação Atual:', 20, y);
+    y += 6;
+    const situationLines = doc.splitTextToSize(a.situation, 170);
+    doc.text(situationLines, 20, y);
+    y += (situationLines.length * 6) + 8;
+    
+    doc.setTextColor(193, 18, 31);
+    doc.setFontSize(12);
+    doc.text('ENCAMINHAMENTO RECOMENDADO', 20, y);
+    y += 8;
+    
+    doc.setTextColor(0);
+    doc.setFontSize(10);
+    const referralLines = doc.splitTextToSize(referral, 170);
+    doc.text(referralLines, 20, y);
+    
+    y = doc.internal.pageSize.height - 30;
+    doc.setDrawColor(193, 18, 31);
+    doc.line(20, y, 190, y);
+    
+    doc.setTextColor(100);
+    doc.setFontSize(9);
+    doc.text('Sistema IntegraVida • Desenvolvido por NEXT', 20, y + 8);
+    doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 20, y + 14);
+    
+    doc.save(`relatorio_${a.name.replace(/\s+/g, '_')}.pdf`);
+    closeModal();
+    showAlert('PDF gerado com sucesso!', 'success', 'successAlert');
+  }
+
+  function generateReport() {
+    const type = document.getElementById('reportType').value;
+    
+    if (type === 'pdf') {
+      if (state.attendances.length === 0) {
+        showAlert('Nenhum atendimento para gerar relatório', 'error', 'successAlert');
+        return;
+      }
+      viewAttendance(state.attendances[state.attendances.length - 1].id);
+    } else if (type === 'summary') {
+      generateSummaryReport();
+    } else if (type === 'statistics') {
+      generateStatisticsReport();
+    }
+  }
+
+  function generateSummaryReport() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    doc.setFontSize(16);
+    doc.setTextColor(193, 18, 31);
+    doc.text('Resumo de Atendimentos', 20, 20);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text('IntegraVida', 20, 28);
+    
+    doc.setTextColor(0);
+    let y = 40;
+    
+    doc.text(`Total de Atendimentos: ${state.attendances.length}`, 20, y);
+    y += 8;
+    
+    const reasons = {};
+    state.attendances.forEach(a => {
+      reasons[a.reason] = (reasons[a.reason] || 0) + 1;
+    });
+    
+    doc.text('Motivos:', 20, y);
+    y += 8;
+    Object.entries(reasons).forEach(([reason, count]) => {
+      doc.text(`• ${reason}: ${count}`, 25, y);
+      y += 6;
+    });
+    
+    doc.text(`Data do Relatório: ${new Date().toLocaleDateString('pt-BR')}`, 20, y + 10);
+    
+    doc.save('resumo_atendimentos.pdf');
+    showAlert('Relatório gerado com sucesso!', 'success', 'successAlert');
+  }
+
+  function generateStatisticsReport() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    doc.setFontSize(16);
+    doc.setTextColor(193, 18, 31);
+    doc.text('Estatísticas do Sistema', 20, 20);
+    
+    doc.setTextColor(0);
+    doc.setFontSize(11);
+    let y = 40;
+    
+    doc.text(`Total de Atendimentos: ${state.attendances.length}`, 20, y);
+    y += 8;
+    
+    const genders = {};
+    state.attendances.forEach(a => {
+      genders[a.gender] = (genders[a.gender] || 0) + 1;
+    });
+    
+    doc.text('Por Gênero:', 20, y);
+    y += 7;
+    Object.entries(genders).forEach(([gender, count]) => {
+      const percentage = ((count / state.attendances.length) * 100).toFixed(1);
+      doc.text(`• ${gender}: ${count} (${percentage}%)`, 25, y);
+      y += 6;
+    });
+    
+    const avgAge = (state.attendances.reduce((sum, a) => sum + parseInt(a.age), 0) / state.attendances.length).toFixed(1);
+    doc.text(`Idade Média: ${avgAge} anos`, 20, y + 3);
+    
+    doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, 20, doc.internal.pageSize.height - 15);
+    
+    doc.save('estatisticas_sistema.pdf');
+    showAlert('Estatísticas geradas com sucesso!', 'success', 'successAlert');
+  }
+
+  // REFERRAL LOGIC
+  function getReferral(reason) {
+    const referrals = {
+      'Dependência química': '⚕️ Encaminhar para comunidade terapêutica especializada em dependência química. Recomenda-se avaliação médica inicial.',
+      'Depressão': '🏥 Encaminhar para CAPS (Centro de Atenção Psicossocial) ou psicólogo. Apoio medicamentoso pode ser necessário.',
+      'Doença mental': '🏥 Encaminhar para hospital especializado em saúde mental para avaliação diagnóstica completa.',
+      'Desemprego': '💼 Encaminhar para centros de profissionalização e programas de geração de renda. Apoio com documentação se necessário.',
+      'Violência doméstica': '👮 Encaminhar para delegacia e casas de acolhimento. Proteção imediata pode ser necessária.',
+      'Falta de moradia': '🏠 Encaminhar para casas de passagem ou centro de apoio. Verificar elegibilidade para programas habitacionais.',
+      'Outros': '📋 Avaliar caso individualmente e encaminhar para órgão competente conforme necessidade identificada.'
+    };
+    return referrals[reason] || referrals['Outros'];
+  }
+
+  // STORAGE
+  function saveDataToStorage() {
+    localStorage.setItem('integravida_attendances', JSON.stringify(state.attendances));
+  }
+
+  function loadDataFromStorage() {
+    const data = localStorage.getItem('integravida_attendances');
+    if (data) {
+      state.attendances = JSON.parse(data);
+    }
+  }
+
+  function exportData() {
+    const dataStr = JSON.stringify(state.attendances, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `integravida_backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showAlert('Dados exportados com sucesso!', 'success', 'successAlert');
+  }
+
+  function importData() {
+    document.getElementById('importFile').click();
+  }
+
+  document.getElementById('importFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      try {
+        const imported = JSON.parse(event.target.result);
+        if (Array.isArray(imported)) {
+          state.attendances = imported;
+          saveDataToStorage();
+          updateDashboard();
+          updateAttendancesTable();
+          showAlert('Dados importados com sucesso!', 'success', 'successAlert');
+        }
+      } catch (err) {
+        showAlert('Erro ao importar arquivo', 'error', 'successAlert');
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  function clearData() {
+    if (confirm('ATENÇÃO: Isso vai deletar TODOS os atendimentos registrados. Tem certeza?')) {
+      if (confirm('Esta ação é irreversível. Deseja continuar?')) {
+        state.attendances = [];
+        saveDataToStorage();
+        updateDashboard();
+        updateAttendancesTable();
+        showAlert('Todos os dados foram deletados', 'success', 'successAlert');
+      }
+    }
+  }
+
+  // UTILITIES
+  function showAlert(message, type, elementId) {
+    const element = document.getElementById(elementId);
+    element.textContent = message;
+    element.className = `alert alert-${type} active`;
+    element.style.display = 'block';
+    
+    if (elementId !== 'loginError') {
+      setTimeout(() => {
+        element.classList.remove('active');
+        element.style.display = 'none';
+      }, 4000);
+    }
+  }
+</script>
+
 </body>
 </html>
