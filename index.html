@@ -763,7 +763,7 @@
             </table>
           </div>
           <p style="margin-top: 1rem; color: #666;">
-            As instituições abaixo são uma base inicial. Você pode atualizar contatos, endereços e responsáveis conforme a rede oficial de Blumenau.
+            Base pública de referência para Blumenau. Os contatos devem ser validados periodicamente com a rede oficial.
           </p>
         </div>
       </div>
@@ -793,11 +793,13 @@
     attendances: [],
     currentAttendance: null,
     network: [
-      { name: 'CRAS Blumenau', type: 'Assistência social', contact: 'Contato oficial da rede municipal', use: 'Acolhimento, cadastro e encaminhamento social' },
-      { name: 'CREAS Blumenau', type: 'Proteção social especial', contact: 'Contato oficial da rede municipal', use: 'Situações de violação de direitos e acompanhamento' },
-      { name: 'CAPS Blumenau', type: 'Saúde mental', contact: 'Contato da rede municipal de saúde', use: 'Depressão, sofrimento psíquico e transtornos mentais' },
-      { name: 'Casa de Passagem', type: 'Acolhimento temporário', contact: 'Contato da instituição', use: 'Falta de moradia e pernoite emergencial' },
-      { name: 'Comunidade Terapêutica', type: 'Tratamento', contact: 'Rede parceira', use: 'Dependência química e reabilitação' }
+      { name: 'Abordagem Social', type: 'Acolhimento imediato', contact: '(47) 99945-9630 • 156 (opção 2)', use: 'Busca ativa e atendimento imediato a pessoas em situação de rua' },
+      { name: 'Centro POP', type: 'Assistência social', contact: '(47) 3381-6509 • Rua Rudolf Roedel, 56 - Salto', use: 'Higiene, alimentação, documentação e encaminhamento' },
+      { name: 'Abrigo Municipal / Casa de Passagem', type: 'Acolhimento temporário', contact: 'Encaminhamento via Centro POP ou Abordagem Social', use: 'Pernoite e proteção emergencial' },
+      { name: 'CAPS II', type: 'Saúde mental', contact: '(47) 3381-7685 • Rua Hermann Hering, 766 - Bom Retiro', use: 'Transtornos mentais severos e persistentes' },
+      { name: 'CAPS ad III', type: 'Álcool e drogas', contact: '(47) 3381-6831 • Rua Hermann Hering, 766 - Bom Retiro', use: 'Dependência química e acompanhamento especializado' },
+      { name: 'CREAS Blumenau', type: 'Proteção social especial', contact: '(47) 3381-6604 / (47) 3381-6659', use: 'Violência doméstica e violação de direitos' },
+      { name: 'DPCAMI', type: 'Proteção policial', contact: '(47) 3326-2111 • 180 • 190', use: 'Registro de ocorrência e proteção à mulher, criança e idoso' }
     ]
   };
 
@@ -1191,7 +1193,7 @@
         <td>${item.name}</td>
         <td>${item.type}</td>
         <td>${item.contact}</td>
-        <td>${item.use}</td>
+        <td><span class="badge badge-primary">${item.use}</span></td>
       `;
     });
   }
