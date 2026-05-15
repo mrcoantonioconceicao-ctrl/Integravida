@@ -556,6 +556,9 @@
       <div class="nav-item" onclick="switchSection('reports')">
         📊 Relatórios
       </div>
+      <div class="nav-item" onclick="switchSection('network')">
+        🏢 Rede de Acolhimento
+      </div>
       <div class="nav-item" onclick="switchSection('settings')">
         ⚙️ Configurações
       </div>
@@ -741,6 +744,29 @@
           </button>
         </div>
       </div>
+
+      <div class="section" id="networkSection">
+        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Rede de Acolhimento de Blumenau</h2>
+        <div class="card">
+          <div class="card-title">🏢 Instituições cadastradas</div>
+          <div class="table-responsive">
+            <table id="networkTable">
+              <thead>
+                <tr>
+                  <th>Instituição</th>
+                  <th>Tipo</th>
+                  <th>Contato</th>
+                  <th>Uso no encaminhamento</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p style="margin-top: 1rem; color: #666;">
+            As instituições abaixo são uma base inicial. Você pode atualizar contatos, endereços e responsáveis conforme a rede oficial de Blumenau.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -765,7 +791,14 @@
   const state = {
     currentUser: null,
     attendances: [],
-    currentAttendance: null
+    currentAttendance: null,
+    network: [
+      { name: 'CRAS Blumenau', type: 'Assistência social', contact: 'Contato oficial da rede municipal', use: 'Acolhimento, cadastro e encaminhamento social' },
+      { name: 'CREAS Blumenau', type: 'Proteção social especial', contact: 'Contato oficial da rede municipal', use: 'Situações de violação de direitos e acompanhamento' },
+      { name: 'CAPS Blumenau', type: 'Saúde mental', contact: 'Contato da rede municipal de saúde', use: 'Depressão, sofrimento psíquico e transtornos mentais' },
+      { name: 'Casa de Passagem', type: 'Acolhimento temporário', contact: 'Contato da instituição', use: 'Falta de moradia e pernoite emergencial' },
+      { name: 'Comunidade Terapêutica', type: 'Tratamento', contact: 'Rede parceira', use: 'Dependência química e reabilitação' }
+    ]
   };
 
   // INITIALIZATION
@@ -817,10 +850,16 @@
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     
     document.getElementById(sectionName + 'Section').classList.add('active');
-    event.target.closest('.nav-item').classList.add('active');
+    if (event && event.target && event.target.closest('.nav-item')) {
+      event.target.closest('.nav-item').classList.add('active');
+    }
     
     if (sectionName === 'attendances') {
       updateAttendancesTable();
+    }
+
+    if (sectionName === 'network') {
+      updateNetworkTable();
     }
   }
 
@@ -1132,15 +1171,29 @@
   // REFERRAL LOGIC
   function getReferral(reason) {
     const referrals = {
-      'Dependência química': '⚕️ Encaminhar para comunidade terapêutica especializada em dependência química. Recomenda-se avaliação médica inicial.',
-      'Depressão': '🏥 Encaminhar para CAPS (Centro de Atenção Psicossocial) ou psicólogo. Apoio medicamentoso pode ser necessário.',
-      'Doença mental': '🏥 Encaminhar para hospital especializado em saúde mental para avaliação diagnóstica completa.',
-      'Desemprego': '💼 Encaminhar para centros de profissionalização e programas de geração de renda. Apoio com documentação se necessário.',
-      'Violência doméstica': '👮 Encaminhar para delegacia e casas de acolhimento. Proteção imediata pode ser necessária.',
-      'Falta de moradia': '🏠 Encaminhar para casas de passagem ou centro de apoio. Verificar elegibilidade para programas habitacionais.',
-      'Outros': '📋 Avaliar caso individualmente e encaminhar para órgão competente conforme necessidade identificada.'
+      'Dependência química': '⚕️ Encaminhar para a Comunidade Terapêutica parceira e acompanhar com a rede de saúde de Blumenau.',
+      'Depressão': '🏥 Encaminhar para o CAPS de Blumenau ou atendimento psicológico da rede municipal.',
+      'Doença mental': '🏥 Encaminhar para a rede de saúde mental de Blumenau para avaliação e acompanhamento.',
+      'Desemprego': '💼 Encaminhar para serviços de qualificação e inserção social em Blumenau.',
+      'Violência doméstica': '👮 Encaminhar para CREAS e rede de proteção de Blumenau.',
+      'Falta de moradia': '🏠 Encaminhar para Casa de Passagem e rede de acolhimento de Blumenau.',
+      'Outros': '📋 Avaliar caso individualmente e encaminhar para o órgão competente da rede de Blumenau.'
     };
     return referrals[reason] || referrals['Outros'];
+  }
+
+  function updateNetworkTable() {
+    const tbody = document.querySelector('#networkTable tbody');
+    tbody.innerHTML = '';
+    state.network.forEach(item => {
+      const row = tbody.insertRow();
+      row.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.type}</td>
+        <td>${item.contact}</td>
+        <td>${item.use}</td>
+      `;
+    });
   }
 
   // STORAGE
@@ -1152,6 +1205,10 @@
     const data = localStorage.getItem('integravida_attendances');
     if (data) {
       state.attendances = JSON.parse(data);
+    }
+    const networkData = localStorage.getItem('integravida_network');
+    if (networkData) {
+      state.network = JSON.parse(networkData);
     }
   }
 
