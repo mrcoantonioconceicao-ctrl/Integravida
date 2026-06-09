@@ -2,9 +2,11 @@
 
 ## 📋 Visão Geral
 
-**IntegraVida** é um sistema profissional de integração social para cadastro, avaliação e encaminhamento de pessoas em situação de vulnerabilidade. Desenvolvido para ser apresentado e vendido como solução completa para assistência social.
+**IntegraVida** é um sistema profissional de integração social para cadastro, avaliação e encaminhamento de pessoas em situação de vulnerabilidade. Desenvolvido especificamente para a realidade de Blumenau/SC, conecta a triagem social à rede de acolhimento local.
 
 **Slogan:** "Reconectando pessoas à vida com dignidade"
+
+**Contexto:** Sistema operacional para assistência social em Blumenau, com encaminhamentos automatizados para órgãos municipais reais (Abordagem Social, Centro POP, CAPS, CREAS, DPCAMI, Abrigo Municipal).
 
 ## 🎯 Funcionalidades
 

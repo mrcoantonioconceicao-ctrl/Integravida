@@ -508,6 +508,7 @@
     <div class="login-header">
       <h1>IntegraVida</h1>
       <p>"Reconectando pessoas à vida com dignidade"</p>
+      <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #888;">Sistema de integração social para Blumenau e região</p>
     </div>
     <div class="alert alert-error" id="loginError"></div>
     <form onsubmit="handleLogin(event)">
@@ -570,7 +571,8 @@
 
       <!-- DASHBOARD SECTION -->
       <div class="section active" id="dashboardSection">
-        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Dashboard</h2>
+        <h2 style="color: var(--secondary); margin-bottom: 0.5rem;">Dashboard</h2>
+        <p style="color: #666; margin-bottom: 1.5rem;">Visão geral dos atendimentos realizados em Blumenau. O sistema auxilia na triagem, cadastro e encaminhamento para a rede de acolhimento local.</p>
         
         <div class="stats-grid">
           <div class="stat-box">
@@ -611,7 +613,8 @@
 
       <!-- NEW ATTENDANCE SECTION -->
       <div class="section" id="newAttendanceSection">
-        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Novo Atendimento</h2>
+        <h2 style="color: var(--secondary); margin-bottom: 0.5rem;">Novo Atendimento</h2>
+        <p style="color: #666; margin-bottom: 1.5rem;">Cadastre uma pessoa em situação de vulnerabilidade. O sistema identificará automaticamente o melhor encaminhamento na rede de Blumenau com base no motivo informado.</p>
         
         <div class="card">
           <form onsubmit="handleSaveAttendance(event)">
@@ -679,7 +682,8 @@
 
       <!-- ATTENDANCES SECTION -->
       <div class="section" id="attendancesSection">
-        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Gerenciamento de Atendimentos</h2>
+        <h2 style="color: var(--secondary); margin-bottom: 0.5rem;">Gerenciamento de Atendimentos</h2>
+        <p style="color: #666; margin-bottom: 1.5rem;">Histórico completo de atendimentos realizados. Visualize detalhes, gere relatórios em PDF e acompanhe os encaminhamentos para a rede de acolhimento de Blumenau.</p>
         
         <div class="card">
           <div class="table-responsive">
@@ -703,7 +707,8 @@
 
       <!-- REPORTS SECTION -->
       <div class="section" id="reportsSection">
-        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Relatórios</h2>
+        <h2 style="color: var(--secondary); margin-bottom: 0.5rem;">Relatórios</h2>
+        <p style="color: #666; margin-bottom: 1.5rem;">Gere relatórios profissionais para documentação, prestação de contas e apresentação aos órgãos de assistência social de Blumenau.</p>
         
         <div class="card">
           <div class="form-group">
@@ -746,7 +751,8 @@
       </div>
 
       <div class="section" id="networkSection">
-        <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">Rede de Acolhimento de Blumenau</h2>
+        <h2 style="color: var(--secondary); margin-bottom: 0.5rem;">Rede de Acolhimento de Blumenau</h2>
+        <p style="color: #666; margin-bottom: 1.5rem;">Estas são as instituições parceiras do sistema IntegraVida em Blumenau. Os encaminhamentos automáticos direcionam cada atendimento para o órgão mais adequado conforme o motivo identificado.</p>
         <div class="card">
           <div class="card-title">🏢 Instituições cadastradas</div>
           <div class="table-responsive">
@@ -783,6 +789,7 @@
       <button class="btn btn-primary" onclick="generatePDF()">📄 Gerar PDF</button>
       <button class="btn btn-secondary" onclick="closeModal()">Fechar</button>
     </div>
+    <p style="margin-top: 1rem; color: #888; font-size: 0.85rem;">Este relatório é válido para documentação nos órgãos de assistência social de Blumenau.</p>
   </div>
 </div>
 
