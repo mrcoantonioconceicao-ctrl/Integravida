@@ -1,8 +1,8 @@
-# IntegraVida v2.0
+# Orion Abordagem v2.0
 
 ## 📋 Visão Geral
 
-**IntegraVida** é um sistema profissional de integração social para cadastro, avaliação e encaminhamento de pessoas em situação de vulnerabilidade. Desenvolvido especificamente para a realidade de Blumenau/SC, conecta a triagem social à rede de acolhimento local.
+**Orion Abordagem** é um sistema profissional de integração social para cadastro, avaliação e encaminhamento de pessoas em situação de vulnerabilidade. Desenvolvido especificamente para a realidade de Blumenau/SC, conecta a triagem social à rede de acolhimento local.
 
 **Slogan:** "Reconectando pessoas à vida com dignidade"
 
