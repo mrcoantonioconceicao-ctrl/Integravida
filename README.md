@@ -17,6 +17,7 @@ Orion Abordagem é um aplicativo voltado para o cadastro e encaminhamento de pes
 - Tela de despedida com mensagem de agradecimento  
 - Interface responsiva para dispositivos móveis  
 - Documentação embutida e ficha técnica
+- Persistência dos atendimentos no servidor, mesmo após sair e entrar novamente
 
 ---
 
@@ -25,8 +26,9 @@ Orion Abordagem é um aplicativo voltado para o cadastro e encaminhamento de pes
 - HTML  
 - CSS  
 - JavaScript  
+- Python (servidor de persistência)
 - jsPDF  
-- GitHub Pages
+- Armazenamento JSON no servidor, com backup local no navegador
 
 ---
 
@@ -54,9 +56,10 @@ Este projeto é aberto a melhorias e colaborações que fortaleçam o impacto so
 
 ## 🔒 Segurança
 
-- Os dados são armazenados localmente  
-- Não há coleta de dados sensíveis  
-- Recomendado uso responsável e exportação periódica
+- Os atendimentos são armazenados no arquivo local do servidor (`integravida_data.json`)
+- O arquivo de dados não é incluído no versionamento do projeto
+- O navegador mantém uma cópia de segurança para indisponibilidades temporárias
+- Recomenda-se uso responsável e exportação periódica
 
 ---
 

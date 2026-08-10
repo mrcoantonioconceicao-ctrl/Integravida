@@ -24,5 +24,6 @@ wheels/
 .env.local
 *.log
 node_modules/
+integravida_data.json
 .replit
 replit.nix

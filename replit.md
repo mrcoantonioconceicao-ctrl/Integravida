@@ -30,7 +30,7 @@
   - Descrição detalhada da situação
   - Responsável pelo atendimento
 - Validação de campos obrigatórios
-- Salvamento automático em localStorage
+- Salvamento automático no servidor, com backup local no navegador
 
 ### Gerenciamento de Atendimentos
 - Tabela com todos os atendimentos registrados
@@ -56,7 +56,9 @@
 - CSS3 (Moderno, responsivo)
 - JavaScript Vanilla (Sem dependências externas)
 - jsPDF (Geração de PDF)
-- localStorage (Persistência de dados)
+- Python HTTP server (API de persistência)
+- Arquivo JSON local do servidor (persistência dos atendimentos)
+- localStorage (backup local e sessão do usuário)
 
 ## 🚀 Como Usar
 
@@ -86,9 +88,10 @@ O sistema oferece encaminhamentos inteligentes baseado no motivo:
 
 ## 💾 Armazenamento de Dados
 
-- Todos os dados são salvos em **localStorage** do navegador
+- Os atendimentos são salvos no servidor em `integravida_data.json`
+- Os dados permanecem disponíveis após logout, novo login e reinício do servidor
+- O navegador mantém um backup local para recuperação durante uma indisponibilidade do servidor
 - Nenhum dado é enviado a servidores externos
-- Dados persistem entre sessões
 - Possibilidade de exportar em JSON para backup
 
 ## 🎨 Design e UX
@@ -146,6 +149,6 @@ Licença: **MIT**
 
 - Sistema totalmente funcional pronto para apresentação
 - Interface intuitiva para usuários sem conhecimento técnico
-- Dados persistem no localStorage
+- Dados persistem no armazenamento do servidor
 - Exportação/Importação para backup e migração
 - Pronto para ser deployado em Replit

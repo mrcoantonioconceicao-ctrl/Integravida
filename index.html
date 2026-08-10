@@ -798,6 +798,7 @@
   const state = {
     currentUser: null,
     attendances: [],
+    dataReady: false,
     currentAttendance: null,
     network: [
       { name: 'Abordagem Social', type: 'Acolhimento imediato', contact: '(47) 99945-9630 • 156 (opção 2)', use: 'Busca ativa e atendimento imediato a pessoas em situação de rua' },
@@ -811,8 +812,9 @@
   };
 
   // INITIALIZATION
-  document.addEventListener('DOMContentLoaded', () => {
-    loadDataFromStorage();
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadDataFromStorage();
+    state.dataReady = true;
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
       loginUser(savedUser);
@@ -873,8 +875,13 @@
   }
 
   // ATTENDANCE MANAGEMENT
-  function handleSaveAttendance(e) {
+  async function handleSaveAttendance(e) {
     e.preventDefault();
+
+    if (!state.dataReady) {
+      showAlert('Aguarde o carregamento dos dados e tente novamente.', 'error', 'successAlert');
+      return;
+    }
     
     const attendance = {
       id: Date.now(),
@@ -890,7 +897,7 @@
     };
 
     state.attendances.push(attendance);
-    saveDataToStorage();
+    await saveDataToStorage();
     
     e.target.reset();
     showAlert('Atendimento salvo com sucesso!', 'success', 'successAlert');
@@ -989,10 +996,10 @@
     document.getElementById('viewModal').classList.add('active');
   }
 
-  function deleteAttendance(id) {
+  async function deleteAttendance(id) {
     if (confirm('Tem certeza que deseja deletar este atendimento?')) {
       state.attendances = state.attendances.filter(a => a.id !== id);
-      saveDataToStorage();
+      await saveDataToStorage();
       updateAttendancesTable();
       updateDashboard();
       showAlert('Atendimento deletado', 'success', 'successAlert');
@@ -1206,18 +1213,68 @@
   }
 
   // STORAGE
-  function saveDataToStorage() {
+  async function saveDataToStorage() {
+    const payload = {
+      attendances: state.attendances,
+      network: state.network
+    };
+
+    // Mantém uma cópia local de segurança caso o servidor fique temporariamente indisponível.
     localStorage.setItem('integravida_attendances', JSON.stringify(state.attendances));
+
+    try {
+      const response = await fetch('/api/data', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) throw new Error('Falha ao salvar no servidor');
+      return true;
+    } catch (error) {
+      showAlert('Dados salvos apenas neste navegador. Verifique a conexão com o servidor.', 'error', 'successAlert');
+      return false;
+    }
   }
 
-  function loadDataFromStorage() {
-    const data = localStorage.getItem('integravida_attendances');
-    if (data) {
-      state.attendances = JSON.parse(data);
+  async function loadDataFromStorage() {
+    const localAttendances = parseStoredAttendances();
+
+    try {
+      const response = await fetch('/api/data');
+      if (!response.ok) throw new Error('Falha ao carregar dados');
+      const serverData = await response.json();
+      const serverAttendances = Array.isArray(serverData.attendances)
+        ? serverData.attendances
+        : [];
+
+      // Une o backup antigo do navegador ao servidor para migrar dados sem duplicá-los.
+      const attendancesById = new Map();
+      [...serverAttendances, ...localAttendances].forEach(attendance => {
+        if (attendance && attendance.id !== undefined) {
+          attendancesById.set(String(attendance.id), attendance);
+        }
+      });
+      state.attendances = Array.from(attendancesById.values());
+
+      if (state.attendances.length !== serverAttendances.length) {
+        await saveDataToStorage();
+      } else {
+        localStorage.setItem('integravida_attendances', JSON.stringify(state.attendances));
+      }
+    } catch (error) {
+      // O backup local evita que o usuário fique sem acesso durante uma indisponibilidade.
+      state.attendances = localAttendances;
+      showAlert('Não foi possível conectar ao armazenamento do servidor. Usando o backup local.', 'error', 'successAlert');
     }
-    const networkData = localStorage.getItem('integravida_network');
-    if (networkData) {
-      state.network = JSON.parse(networkData);
+  }
+
+  function parseStoredAttendances() {
+    try {
+      const data = localStorage.getItem('integravida_attendances');
+      const parsed = data ? JSON.parse(data) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
     }
   }
 
@@ -1237,17 +1294,17 @@
     document.getElementById('importFile').click();
   }
 
-  document.getElementById('importFile').addEventListener('change', function(e) {
+  document.getElementById('importFile').addEventListener('change', async function(e) {
     const file = e.target.files[0];
     if (!file) return;
     
     const reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = async function(event) {
       try {
         const imported = JSON.parse(event.target.result);
         if (Array.isArray(imported)) {
           state.attendances = imported;
-          saveDataToStorage();
+          await saveDataToStorage();
           updateDashboard();
           updateAttendancesTable();
           showAlert('Dados importados com sucesso!', 'success', 'successAlert');
@@ -1259,11 +1316,11 @@
     reader.readAsText(file);
   });
 
-  function clearData() {
+  async function clearData() {
     if (confirm('ATENÇÃO: Isso vai deletar TODOS os atendimentos registrados. Tem certeza?')) {
       if (confirm('Esta ação é irreversível. Deseja continuar?')) {
         state.attendances = [];
-        saveDataToStorage();
+        await saveDataToStorage();
         updateDashboard();
         updateAttendancesTable();
         showAlert('Todos os dados foram deletados', 'success', 'successAlert');

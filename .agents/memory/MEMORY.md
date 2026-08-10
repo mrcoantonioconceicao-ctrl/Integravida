@@ -1,0 +1,1 @@
+- [Server persistence storage](persistence-storage.md) — records use an atomic server-side JSON store with browser backup and migration.
